@@ -19,10 +19,16 @@ func New(size uint64) *Map {
 func (m *Map) Set(key, val uint64) {
 	for i := Hash(key); ; i++ {
 		i &= m.mask
-		if old := cas(&m.data[i][0], 0, key); old == 0 || old == key {
-			atomic.StoreUint64(&m.data[i][1], val)
-			return
+		if cur := atomic.LoadUint64(&m.data[i][0]); cur != key {
+			if cur != 0 {
+				continue
+			}
+			if old := cas(&m.data[i][0], 0, key); old != 0 && old != key {
+				continue
+			}
 		}
+		atomic.StoreUint64(&m.data[i][1], val)
+		return
 	}
 }
 
