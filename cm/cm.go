@@ -21,6 +21,9 @@ func NewSketch(size uint64) *Sketch {
 	size |= size >> 16
 	size |= size >> 32
 	size++
+	if size < 8 {
+		size = 8
+	}
 	// initialize block rows
 	s := &Sketch{}
 	for i := range s.blocks {
