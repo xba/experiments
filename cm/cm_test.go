@@ -8,7 +8,7 @@ import (
 )
 
 func TestIncrement(t *testing.T) {
-	s := NewSketch(32)
+	s := NewSketch(128)
 	h := fnv.New64a()
 	hashes := make([]uint64, 32)
 	for i := 0; i < 32; i++ {
@@ -21,7 +21,9 @@ func TestIncrement(t *testing.T) {
 		average += s.Estimate(hashes[i])
 	}
 	average /= 32
-	fmt.Printf("average: %d\n", average)
+	if average != 1 {
+		t.Fatal("average value should be 1")
+	}
 }
 
 func BenchmarkIncrement(b *testing.B) {
