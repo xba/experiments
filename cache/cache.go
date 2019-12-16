@@ -16,7 +16,7 @@ type Cache struct {
 func NewCache(size uint64) *Cache {
 	size = nearest2Power(size)
 	return &Cache{
-		sketch:  cm.NewSketch(size * 10),
+		sketch:  cm.NewSketch(size),
 		buckets: make([]item, size),
 		offset:  uint64(bits.LeadingZeros64(size)) + 1,
 	}
