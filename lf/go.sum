@@ -1,0 +1,8 @@
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/xba/experiments v0.0.0-20191216194007-cee3927da514 h1:ZxfOQq6VfFhnsARYJVT9E7u3LSmpUdsatDSIC6j7RcM=
+github.com/xba/experiments/cm v0.0.0-20191216194007-cee3927da514 h1:xaf0xbi9mAR75XNoZGiy++7OK1LDGFkEDN3JNz9YkuU=
+github.com/xba/experiments/cm v0.0.0-20191216194007-cee3927da514/go.mod h1:GBf+wDU0769m1Gcdc8ODhbHXLGF17pG19xpgVSmx3GY=
+github.com/xba/experiments/fib v0.0.0-20191213222304-8ad7a74f3fad/go.mod h1:KBOC0hyKlkmp9+RIOyHRWTz7s6XzEJcVngGZM9xf7ZA=
+github.com/xba/experiments/fib v0.0.0-20191216194007-cee3927da514 h1:J9mew+zaZj+gbxhH9w+Ai5qcSkdx9g2K8EDv61QdZjg=
+github.com/xba/experiments/fib v0.0.0-20191216194007-cee3927da514/go.mod h1:KBOC0hyKlkmp9+RIOyHRWTz7s6XzEJcVngGZM9xf7ZA=
