@@ -3,8 +3,6 @@ package cm
 import (
 	"fmt"
 	"math/bits"
-
-	"github.com/xba/experiments/fib"
 )
 
 type Sketch struct {
@@ -34,30 +32,30 @@ func NewSketch(size uint64) *Sketch {
 }
 
 func (s *Sketch) Increment(hash uint64) {
+	a, b := hash<<32, hash
 	for i := range s.blocks {
-		// fibonacci hashing 16-bit segment of the hash to get a different
-		// block index on each row, reduce collisions
-		mixed := fib.Hash(hash << (i * 16) >> 48)
 		// right shift based on the size of the row
-		block := &s.blocks[i][mixed>>s.offset]
+		block := &s.blocks[i][a>>s.offset]
 		// shift determines whether we use the left or right half of the block
-		shift := (mixed & 1) * 4
+		shift := (a & 1) * 4
 		if (*block>>shift)&0x0f < 15 {
 			*block += 1 << shift
 		}
+		a += b
 	}
 }
 
 func (s *Sketch) Estimate(hash uint64) uint64 {
+	a, b := hash<<32, hash
 	min := byte(255)
 	for i := range s.blocks {
-		mixed := fib.Hash(hash << (i * 16) >> 48)
-		block := &s.blocks[i][mixed>>s.offset]
-		shift := (mixed & 1) * 4
+		block := &s.blocks[i][a>>s.offset]
+		shift := (a & 1) * 4
 		value := byte((*block >> shift) & 0x0f)
 		if value < min {
 			min = value
 		}
+		a += b
 	}
 	return uint64(min)
 }
