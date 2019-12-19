@@ -53,6 +53,21 @@ func TestEstimate(t *testing.T) {
 	}
 }
 
+func TestReset(t *testing.T) {
+	s := NewSketch(16)
+	h := fnv.New64a()
+	for i := 0; i < 128; i++ {
+		h.Write([]byte(fmt.Sprintf("%d", i)))
+		hash := h.Sum64()
+		s.Increment(hash)
+	}
+	old := s.Estimate(h.Sum64())
+	s.Reset()
+	if s.Estimate(h.Sum64()) >= old {
+		t.Fatal()
+	}
+}
+
 func BenchmarkIncrement(b *testing.B) {
 	s := NewSketch(32)
 	hash := rand.Uint64()

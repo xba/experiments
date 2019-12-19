@@ -25,9 +25,9 @@ func NewSketch(size uint64) *Sketch {
 	// initialize block rows
 	s := &Sketch{}
 	for i := range s.blocks {
-		s.blocks[i] = make([]byte, size/4/2)
+		s.blocks[i] = make([]byte, size/2)
 	}
-	s.offset = uint64(bits.LeadingZeros64(size/4/2)) + 1
+	s.offset = uint64(bits.LeadingZeros64(size/2)) + 1
 	return s
 }
 
@@ -53,6 +53,14 @@ func (s *Sketch) Estimate(hash uint64) uint64 {
 		a += b
 	}
 	return uint64(min)
+}
+
+func (s *Sketch) Reset() {
+	for i := range s.blocks {
+		for j := range s.blocks[i] {
+			s.blocks[i][j] = (s.blocks[i][j] >> 1) & 0x77
+		}
+	}
 }
 
 func (s *Sketch) String() string {
