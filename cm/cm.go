@@ -51,8 +51,7 @@ func (s *Sketch) Estimate(hash uint64) uint64 {
 	for i := range s.blocks {
 		block := &s.blocks[i][a>>s.offset]
 		shift := (a & 1) * 4
-		value := byte((*block >> shift) & 0x0f)
-		if value < min {
+		if value := byte((*block >> shift) & 0x0f); value < min {
 			min = value
 		}
 		a += b
