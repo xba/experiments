@@ -22,7 +22,6 @@ func NewSketch(size uint64) *Sketch {
 	if size < 8 {
 		size = 8
 	}
-	// initialize block rows
 	s := &Sketch{}
 	for i := range s.blocks {
 		s.blocks[i] = make([]byte, size/2)
