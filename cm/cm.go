@@ -34,11 +34,8 @@ func NewSketch(size uint64) *Sketch {
 func (s *Sketch) Increment(hash uint64) {
 	a, b := hash<<32, hash
 	for i := range s.blocks {
-		// right shift based on the size of the row
 		block := &s.blocks[i][a>>s.offset]
-		// shift determines whether we use the left or right half of the block
-		shift := (a & 1) * 4
-		if (*block>>shift)&0x0f < 15 {
+		if shift := (a & 1) * 4; (*block>>shift)&0x0f < 15 {
 			*block += 1 << shift
 		}
 		a += b
@@ -50,8 +47,7 @@ func (s *Sketch) Estimate(hash uint64) uint64 {
 	min := byte(255)
 	for i := range s.blocks {
 		block := &s.blocks[i][a>>s.offset]
-		shift := (a & 1) * 4
-		if value := byte((*block >> shift) & 0x0f); value < min {
+		if value := byte((*block >> ((a & 1) * 4)) & 0x0f); value < min {
 			min = value
 		}
 		a += b
