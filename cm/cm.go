@@ -6,7 +6,7 @@ import (
 )
 
 type Sketch struct {
-	blocks [4][]byte
+	blocks [1][]byte
 	offset uint64
 }
 
