@@ -7,19 +7,18 @@ import (
 	"testing"
 )
 
+/*
 func TestHashing(t *testing.T) {
 	algo := fnv.New64a()
 	algo.Write([]byte(fmt.Sprintf("%d", rand.Uint64())))
 	hash := algo.Sum64()
 	a, b := hash<<32, hash
-	/*
-		fmt.Printf("%d: %064b\n", 0, a)
-		fmt.Printf("%d: %064b\n", 1, a+b)
-		fmt.Printf("%d: %064b\n", 2, a+b+b)
-		fmt.Printf("%d: %064b\n", 3, a+b+b+b)
-	*/
-	_, _ = a, b
+	fmt.Printf("%d: %064b\n", 0, (a)>>48)
+	fmt.Printf("%d: %064b\n", 1, (a+b)>>48)
+	fmt.Printf("%d: %064b\n", 2, (a+b+b)>>48)
+	fmt.Printf("%d: %064b\n", 3, (a+b+b+b)>>48)
 }
+*/
 
 func TestIncrement(t *testing.T) {
 	s := NewSketch(128)
@@ -30,7 +29,6 @@ func TestIncrement(t *testing.T) {
 		hashes[i] = h.Sum64()
 		s.Increment(hashes[i])
 	}
-	fmt.Println(s)
 	average := uint64(0)
 	for i := range hashes {
 		average += s.Estimate(hashes[i])
@@ -38,6 +36,20 @@ func TestIncrement(t *testing.T) {
 	average /= 32
 	if average != 1 {
 		t.Fatal("average value should be 1")
+	}
+}
+
+func TestEstimate(t *testing.T) {
+	s := NewSketch(128)
+	h := fnv.New64a()
+	i := uint64(0)
+	h.Write([]byte(fmt.Sprintf("%d", rand.Uint64())))
+	hash := h.Sum64()
+	for ; i < rand.Uint64()&15; i++ {
+		s.Increment(hash)
+	}
+	if s.Estimate(hash) != i {
+		t.Fatal()
 	}
 }
 
