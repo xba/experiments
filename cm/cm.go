@@ -34,9 +34,16 @@ func (s *Sketch) Increment(hash uint64) {
 	a, b := hash<<32, hash
 	for i := range s.blocks {
 		block := &s.blocks[i][a>>s.offset]
-		if shift := (a & 1) * 4; (*block>>shift)&0x0f < 15 {
-			*block += 1 << shift
-		}
+		shift := (a & 1) * 4
+		n := (*block >> shift) & 0x0f
+		n = n - 0xf
+		n = n >> 7
+		*block += n << shift
+		/*
+			if shift := (a & 1) * 4; (*block>>shift)&0x0f < 15 {
+				*block += 1 << shift
+			}
+		*/
 		a += b
 	}
 }
