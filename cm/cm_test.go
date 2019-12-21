@@ -70,11 +70,16 @@ func TestReset(t *testing.T) {
 
 func BenchmarkIncrement(b *testing.B) {
 	s := NewSketch(32)
-	hash := rand.Uint64()
+	h := fnv.New64a()
+	hashes := make([]uint64, 1000000)
+	for i := range hashes {
+		h.Write([]byte(fmt.Sprintf("%d", i)))
+		hashes[i] = h.Sum64()
+	}
 	b.SetBytes(1)
 	b.ResetTimer()
 	for n := 0; n < b.N; n++ {
-		s.Increment(hash)
+		s.Increment(hashes[n&999999])
 	}
 }
 
